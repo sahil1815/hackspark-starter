@@ -165,30 +165,31 @@ services:
       interval: 15s
       timeout: 5s
       retries: 3
+      start_period: 40s
     networks:
       - rentpi-net
 
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    restart: unless-stopped
-    ports:
-      - "${FRONTEND_PORT:-3000}:3000"
-    environment:
-      VITE_GATEWAY_URL:        http://localhost:8000
-      NEXT_PUBLIC_GATEWAY_URL: http://localhost:8000
-      GATEWAY_URL_INTERNAL:    http://api-gateway:8000 
-    depends_on:
-      api-gateway:
-        condition: service_healthy
-    healthcheck:                                     
-      test: ["CMD-SHELL", "wget -qO- http://localhost:3000 || exit 1"]
-      interval: 15s
-      timeout: 5s
-      retries: 3
-    networks:
-      - rentpi-net
+  # frontend:
+  #   build:
+  #     context: ./frontend
+  #     dockerfile: Dockerfile
+  #   restart: unless-stopped
+  #   ports:
+  #     - "${FRONTEND_PORT:-3000}:3000"
+  #   environment:
+  #     VITE_GATEWAY_URL:        http://localhost:8000
+  #     NEXT_PUBLIC_GATEWAY_URL: http://localhost:8000
+  #     GATEWAY_URL_INTERNAL:    http://api-gateway:8000 
+  #   depends_on:
+  #     api-gateway:
+  #       condition: service_healthy
+  #   healthcheck:                                     
+  #     test: ["CMD-SHELL", "wget -qO- http://localhost:3000 || exit 1"]
+  #     interval: 15s
+  #     timeout: 5s
+  #     retries: 3
+  #   networks:
+  #     - rentpi-net
 
 # ── Named Volumes ─────────────────────────────────────────────────────────────
 volumes:
